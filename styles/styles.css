@@ -37,18 +37,28 @@ code {
 
 a:visited, a:hover, a:active, a:link {
 	font-family: sans-serif, Verdana;
-	color: #F09050;
+	color: #90D050;
 	font-size: 12px;
 	text-decoration: none;
 	background: none;
+	transition: 0.2s;
+}
+
+a:hover {
+	color: #F0F0F0;
 }
 
 a.article-link:active, a.article-link:link, a.article-link:visited, a.article-link:hover {
 	font-family: sans-serif, Verdana;
-	color: #F09050;
+	color: #F05050;
 	font-size: 12px;
 	text-decoration: none;
 	background: none;
+	transition: 0.2s;
+}
+
+a.article-link:hover {
+	color: #F0F0F0;
 }
 
 .codeblock {
