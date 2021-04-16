@@ -27,6 +27,11 @@ h4 {font-size: 21px}
 h5 {font-size: 17px}
 h6 {font-size: 15px}
 
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
 code {
 	font-family: MonoLisa, Consolas;
 	color: #F09050;
@@ -37,7 +42,7 @@ code {
 
 a:visited, a:hover, a:active, a:link {
 	font-family: sans-serif, Verdana;
-	color: #90D050;
+	color: #D09050;
 	font-size: 12px;
 	text-decoration: none;
 	background: none;
@@ -48,9 +53,41 @@ a:hover {
 	color: #F0F0F0;
 }
 
+body {
+	background: linear-gradient(180deg, rgb(10, 20, 10) 0%, rgb(0, 0, 0) 640px);
+	padding: 0px;
+	margin: 0px;
+	top: 0px;
+	background-position: fixed;
+}
+
+.header {
+	background: linear-gradient(90deg, rgb(50, 0, 0) 0%, rgb(0, 50, 0) 50%, rgb(0, 0, 50) 100%);
+	padding: 0px;
+	margin: 0px;
+	top: 0%;
+	height: 24px;
+	position: fixed;
+	
+	border-bottom-color: red;
+	border-bottom-width: 5px;
+
+	width: 100%;
+
+	transition: 2s;
+}
+
+.menu {
+	display: none;
+}
+
+.header:hover + .menu {
+	background: linear-gradient(90deg, rgb(250, 0, 0) 0%, rgb(0, 250, 0) 50%, rgb(0, 0, 250) 100%);
+}
+
 a.article-link:active, a.article-link:link, a.article-link:visited, a.article-link:hover {
 	font-family: sans-serif, Verdana;
-	color: #F05050;
+	color: #90D050;
 	font-size: 12px;
 	text-decoration: none;
 	background: none;
@@ -58,6 +95,32 @@ a.article-link:active, a.article-link:link, a.article-link:visited, a.article-li
 }
 
 a.article-link:hover {
+	color: #F0F0F0;
+}
+
+a.wiki-link:active, a.wiki-link:link, a.wiki-link:visited, a.wiki-link:hover {
+	font-family: sans-serif, Verdana;
+	color: #D05050;
+	font-size: 12px;
+	text-decoration: none;
+	background: none;
+	transition: 0.2s;
+}
+
+a.wiki-link:hover {
+	color: #F0F0F0;
+}
+
+a.resource-link:active, a.resource-link:link, a.resource-link:visited, a.resource-link:hover {
+	font-family: sans-serif, Verdana;
+	color: #5050F0;
+	font-size: 12px;
+	text-decoration: none;
+	background: none;
+	transition: 0.2s;
+}
+
+a.resource-link:hover {
 	color: #F0F0F0;
 }
 
