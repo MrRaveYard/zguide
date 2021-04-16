@@ -3,11 +3,12 @@
 ## General
 / | GZDoom 4.6 | Zandronum 3.0.1
 ------------ | ------------- | -
-Features | +|ZDoom 2.8pre-441-g458e1b1 / GZDoom 1.8.6|
+Base (G)ZDoom | Latest|ZDoom 2.8pre-441-g458e1b1 / GZDoom 1.8.6|
 OpenGL | 3.3+ | 2.0+ (?)
 Vulkan | ✔️|❌
 Softpoly |✔️|❌
 Truecolor Soft. Renderer |✔️|❌
+
 
 ## ACS
 ACS Features | GZDoom 4.6 | Zandronum 3.0.1
@@ -70,6 +71,35 @@ SetPlayerLivesLeft|❌|✔️
 SortDBEntries|❌|✔️
 Strftime|❌|✔️
 SystemTime|❌|✔️
+
+## Multiplayer
+
+
+Multiplayer features | GZDoom 4.6 | Zandronum 3.0.1
+------------ | ------------- | -
+Architecture|Peer to peer (supports routing traffic through single peer)|UDP Client/Server
+Checksum loaded WADs|❌|✔️(detects protected lumps)
+Dedicated server|❌|✔️
+Load game|✔️(on startup, must be sent to each peer)|❌
+Master server|❌(unofficial connectors)|✔️
+Max players|8|64
+Port|5029|10666
+Player skins|✔️|✔️
+Reconnect to game|❌|✔️
+Save game|✔️|❌
+
+
+Built in gamemodes | GZDoom 4.6 | Zandronum 3.0.1
+------------ | ------------- | -
+Coop|✔️|✔️
+Survival (limited lives)|❌|✔️
+Deathmatch |✔️|✔️
+Team Deathmatch |✔️ (probably?)|✔️
+Last Man Standing |❌|✔️
+Team Last Man Standing |❌|✔️
+CTF, One flag CTF, Skulltag |❌|✔️
+
+
 
 ## ZScript
 

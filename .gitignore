@@ -1,0 +1,10 @@
+*.backup*
+*.dbs*
+*.o
+*.ir
+*.exe
+*.lnk
+*.sfk
+*.pdn
+*.psd
+*.psb

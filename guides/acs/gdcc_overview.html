@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide - GDCC</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+	<div class="main">
+		<div class="name">
+			<h1>GDCC - Game Data Compiler Collection</h1>
+		</div>
+
+		<h2>Introduction</h2>
+		<p>Created by DavidPH</p>
+		<p>GDCC is a set of tools and compilers which can combine and compile various languages into ACS bytecode.</p>
+		<p>The collection is similar to GCC in terms of switches, parameters and naming.</p>
+
+		<p><a href="https://github.com/DavidPH/GDCC">README</a> (scroll down)</p>
+
+
+		<h3>Download</h3>
+
+		<p>
+			<a href="ipns://davidph.greyserv.net/">Primary</a><br>
+			<a href="https://www.dropbox.com/sh/5wae0ro7vuesud7/AADSyNu4S89Gc2RJc0PdS3qHa?dl=0">Mirror</a><br>
+			<a href="https://github.com/DavidPH/GDCC">GitHub Repository</a><br>
+		</p>
+
+		<h2>Official documentation</h2>
+		<p><a href="https://github.com/DavidPH/GDCC/tree/master/doc">Here</a></p>
+		<p>Contains also examples for ACS and C.</p>
+		<!--<p>For further information read these guides:</p>-->
+
+		<h3>How to use</h3>
+
+		<p>GDCC consist of three language compilers</p>
+		<ul>
+			<li><code>gdcc-acc</code> - ACS</li>
+			<li><code>gdcc-as</code> - GDCC assembly</li>
+			<li><code>gdcc-cc</code> - C language</li>
+		</ul>
+
+		<p>You can get detailed information on each compiler by running:</p>
+		<div class="group codeblock"><pre><code class="plaintext">gdcc-acc --help-long
+gdcc-as --help-long
+gdcc-cc --help-long
+</code></pre></div>
+
+		<p>Let's look at the most important parameters/switches.</p>
+
+		<h4>Target</h4>
+		<p>Each compiler can compile into different targets using <code>--target-engine</code> parameter.</p>
+		<p>For GZDoom use <code>--target-format ACSE</code> and <code>--target-engine ZDoom</code></p>
+		<p>These settings should be set and kept consistent in all stages of compilation, especially when you use <code>-c</code> to generate IR files.</p>
+
+		<button type="button" class="collapsible">More options</button>
+		<div class="group content hidden">
+
+
+			<p>Engine</p>
+			<ul>
+				<li><code>--target-engine ZDoom</code></li>
+				<li><code>--target-engine Zandronum</code></li>
+				<li><code>--target-engine Eternity</code></li>
+				<li><code>--target-engine Doominati</code></li>
+			</ul>
+			<p>Zandronum and GZDoom bytecode is the same, however Zandronum is missing few operations such as script scope array arithmetics/read/write.</p>
+			<p>Format</p>
+			<ul>
+				<li><code>--target-format ACSE</code></li>
+				<li><code>--target-format DGE_NTS</code></li>
+			</ul>
+
+		</div>
+
+		<h4>Output</h4>
+		<p><code>-o file.o</code> specifies file to write to.</p>
+
+		<h4>Intermediary representation (IR)</h4>
+		<p>By specifying <code>-c</code> outputs IR files instead of bytecode which can be linked together using <code>gdcc-ld</code></p>
+
+		<h3>Compilation</h3>
+
+		<h4>ACS</h4>
+		<p>By default GDCC outputs bytecode for specified game engine</p>
+		<div class="group codeblock"><pre><code class="plaintext">gdcc-acc -o out.o --target-engine ZDoom --target-format ACSE source.acs</code></pre></div>
+
+		<p>It can also compile all specified files into a single bytecode directly using</p>
+
+		<div class="group codeblock"><pre><code class="plaintext">gdcc-acc -o out.o --target-engine ZDoom --target-format ACSE source.acs source2.acs source3.acs</code></pre></div>
+		<p>or using a wildcard</p>
+		<div class="group codeblock"><pre><code class="plaintext">gdcc-acc -o out.o --target-engine ZDoom --target-format ACSE *.acs</code></pre></div>
+
+
+		<h4>C</h4>
+		<p>In this case, you will need to link GDCC library and C library using intermediary representation (IR) files.</p>
+		<ul>
+			<li>Use <code>-c</code> with GDCC to ouput IR instead of bytecode.</li>
+			<li>First use <code>gdcc-makelib</code> to build IR of GDCC and C libraries.
+				<ul>
+					<li>This step needs can be done only once or whenever you want overwrite your files with different target/format or whenever you have updated your GDCC.</li>
+					<li>C library is mostly optional.</li>
+				</ul>
+			<li>Compile your <code>.c</code> file(s)</li>
+			<li>Combine IR files using <code>gdcc-ld</code></li>
+		</ul>
+		<div class="group codeblock"><pre><code class="plaintext">gdcc-makelib -o libGDCC.ir --target-engine ZDoom --target-format ACSE libGDCC
+
+gdcc-makelib -o libC.ir --target-engine ZDoom --target-format ACSE libC
+
+gdcc-cc -c -o out.ir --target-engine ZDoom --target-format ACSE source.c
+
+gdcc-ld -o out.o --target-engine ZDoom --target-format ACSE out.ir libGDCC.ir libC.ir</code></pre></div>
+		
+		<h4>Assembly</h4>
+			<p>If you're at this level, you don't need help figuring out how to build it.</p>
+		</h4>
+
+		<h3>Cross-language compilation (using IR)</h3>
+		<p>You can compile each language into IR files using <code>-c</code> flag</p>
+		<p>Multiple IR files can then be linked and converted to a specific bytecode format using <code>gdcc-ld</code></p>
+		<p>How to call function written in different language is explained here: TODO link</p>
+		<div class="group">
+			<img src="media/gdcc_ov_1.png" class="picture" style="width: 500px;">
+		</div>
+
+		<h3>Misc. Tools</h3>
+			<p><code>gdcc-ar-wad</code> unpack/pack wads</p>
+			<p><code>gdcc-cpp</code> C preprocessor</p>
+			<p><code>gdcc-irdump</code> list information from IR file including assembly, functions, globals, string table.</p>
+			<p><code>gdcc-makelib</code> utility to build GDCC and C libraries.</p>
+			<p><code>gdcc-ntsc</code> ???</p> 
+	</div>
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>
