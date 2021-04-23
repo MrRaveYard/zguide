@@ -62,21 +62,43 @@
 	</div>
 	<br>
 	<div class="main">
-		<h2>About</h2>
-		<p>This is an early test version/prototype. In the future I'd probably like to use python automation to generates HTML pages out of <code>.md</code> or anything else which has as little syntax bloat as possible.</p>
-		
-		<p>I decided to write down some tutorials which aren't well explained or described anywhere else.</p>
-		<p>I'll also add some pages about insight into GZDoom engine and how to optimize your mods and make them more compatible with other mods.</p>
+		<h2 id="about">About</h2>
+<p>Unofficial pages/guides/tips about various topics related to GZDoom/Zandronum modding. It's not supposed to be a wiki, but the idea is to keep it simple enough to download and use without internet.</p>
+<p>Currently these pages are generated from <code>.md</code> files via custom python scripts. Still working out the details.</p>
+<p>It's too early to accept any contributions but whatever. Currently it's pretty much a general <code>.md</code> with html capabilities.</p>
+<pre><code class="language-md"># What is this page about
 
-		<h3>Terminology</h3>
-		<p>Some clarifications on certain terms.</p>
-		<ul>
+[ TOC ]
 
-		<li><code>TID</code> is thing id.</li>
-		<li><code>bytecode</code> <a href="https://en.wikipedia.org/wiki/Bytecode">wiki</a></li>
-		</ul>
+## About
+TOC is table of content which is generated from md parser, yikes.
 
+Pictures, sure. Will be in a media folder with the document:
+&lt;img src=&quot;media/pic.png&quot;&gt;
 
+Links [are fine](https://mrraveyard.github.io/zguide)
+
+* bullet points
+    * subpoint too
+    * oh yeah
+
+Prefer code markers for things such as ACS functions like for example: `PlayerNumber`, `ACS_NamedExecuteWithResult` or anything like that.
+
+```c
+code
+```
+
+and regular text in a nicer box
+
+```text
+just some plain text
+```
+
+</code></pre>
+<h3 id="terminology">Terminology</h3>
+<p>Some clarifications on certain terms.</p>
+<p><code>TID</code> is thing id
+<code>bytecode</code> definition at <a href="https://en.wikipedia.org/wiki/Bytecode">wikipedia</a></p>
 
 		<div class="group row">
 			<div class="column" style="margin: auto; align-self: center;">
@@ -95,7 +117,7 @@
 		<div class="footer">
 		This page was generated using ZGuideMake version: Alpha 0.0.3
 		</div>
-		<script src="highlight/highlight.pack.js"></script>
+		<script src="styles/highlight/highlight.pack.js"></script>
 		<script src="styles/scripts.js"></script>
 		<script>hljs.highlightAll();</script>
 	</body>
