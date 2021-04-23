@@ -38,6 +38,7 @@
 </ul>
 </li>
 <li><a href="#cross-language-compilation-using-ir">Cross-language compilation (using IR)</a></li>
+<li><a href="#multiple-bytecode-files">Multiple bytecode files</a></li>
 <li><a href="#misc-tools">Misc. Tools</a></li>
 </ul>
 </li>
@@ -76,14 +77,14 @@ gdcc-cc --help-long
 <p>These settings should be set and kept consistent in all stages of compilation, especially when you use <code>-c</code> to generate IR files.</p>
 <h4 id="more-about-targets">More about targets</h4>
 <h5 id="engine">Engine</h5>
-<pre><code>--target-engine ZDoom
+<pre><code class="language-text">--target-engine ZDoom
 --target-engine Zandronum
 --target-engine Eternity
 --target-engine Doominati
 </code></pre>
 <p>Zandronum and GZDoom bytecode is the same, however Zandronum is missing few operations such as script scope array arithmetics/read/write.</p>
 <h5 id="format">Format</h5>
-<pre><code>--target-format ACSE
+<pre><code class="language-text">--target-format ACSE
 --target-format DGE_NTS
 </code></pre>
 <h3 id="output">Output</h3>
@@ -93,7 +94,7 @@ By specifying <code>-c</code> outputs IR files instead of bytecode which can be 
 <h2 id="compilation">Compilation</h2>
 <h3 id="acs">ACS</h3>
 <p>By default GDCC outputs bytecode for specified game engine</p>
-<pre><code>gdcc-acc -o out.o --target-engine ZDoom --target-format ACSE source.acs
+<pre><code class="language-text">gdcc-acc -o out.o --target-engine ZDoom --target-format ACSE source.acs
 </code></pre>
 <p>It can also compile all specified files into a single bytecode directly using</p>
 <pre><code class="language-text">gdcc-acc -o out.o --target-engine ZDoom --target-format ACSE source.acs source2.acs source3.acs
@@ -127,6 +128,13 @@ How to call function written in different language is explained here: TODO link<
 <img src="media/gdcc_ov_1.png" class="picture" style="width: 500px;">
 </div>
 
+<h2 id="multiple-bytecode-files">Multiple bytecode files</h2>
+<p>In-case where you want multiple bytecode modules/libraries, it is best recommended to use <code>alloc-minimum Sta "" 1000000000</code> for module containing libC and libGDCC and <code>10000</code> for any other lib.</p>
+<p>This might be the case if you want to have map specific scripts for convenience in an <code>acs</code> folder.</p>
+<pre><code class="language-text">gdcc-ld -o out.o --target-engine ZDoom --target-format ACSE out.ir libGDCC.ir libC.ir --alloc-minimum Sta &quot;&quot; 1000000000
+
+gdcc-ld -o map01.o --target-engine ZDoom --target-format ACSE map01.ir --alloc-minimum Sta &quot;&quot; 10000
+</code></pre>
 <h2 id="misc-tools">Misc. Tools</h2>
 <p><code>gdcc-ar-wad</code> unpack/pack wads</p>
 <p><code>gdcc-cpp</code> C preprocessor</p>
@@ -137,7 +145,7 @@ How to call function written in different language is explained here: TODO link<
 		
 
 		<div class="footer">
-		This page was generated using ZGuideMake version: Alpha 0.0.1
+		This page was generated using ZGuideMake version: Alpha 0.0.3
 		</div>
 		
 		<script src="../../styles/highlight/highlight.pack.js"></script>

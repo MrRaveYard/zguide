@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="name">
+				<a href="../../index.html">
+					<h1>ZGuide</h1>
+				</a>
+			</div>
+			<h1 id="gdcc-c-print">GDCC C Print</h1>
+<div class="toc">
+<ul>
+<li><a href="#gdcc-c-print">GDCC C Print</a><ul>
+<li><a href="#basic-acs-printing">Basic ACS printing</a><ul>
+<li><a href="#print">Print</a></li>
+<li><a href="#printbold">PrintBold</a></li>
+<li><a href="#log">Log</a></li>
+<li><a href="#strparam">StrParam</a></li>
+<li><a href="#hudmessage">HudMessage</a></li>
+</ul>
+</li>
+<li><a href="#c-library">C library</a><ul>
+<li><a href="#printf">printf</a></li>
+<li><a href="#__nprintf">__nprintf</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Keep in mind not all printing functions are listed. Entire extension list including non-standard print functions is <a href="https://github.com/DavidPH/GDCC/blob/master/doc/C-ext.txt">here</a>.</p>
+<h2 id="basic-acs-printing">Basic ACS printing</h2>
+<p>Requires</p>
+<pre><code class="language-c">#include &lt;ACS_ZDoom.h&gt;
+</code></pre>
+<h3 id="print">Print</h3>
+<p>Printing in ACS:</p>
+<pre><code class="language-c">Print(s:&quot;Hello &quot;, n:0, s:&quot;, I see you've got &quot;, d:GetActorProperty(0, APROP_Health), s:&quot; health.&quot;);
+</code></pre>
+<p>in C would be:</p>
+<pre><code class="language-c">ACS_BeginPrint();
+ACS_PrintString(s&quot;Hello &quot;);
+ACS_PrintName(0);
+ACS_PrintString(s&quot;, I see you've got &quot;);
+ACS_PrintInt(ACS_GetActorProperty(0, APROP_Health));
+ACS_PrintString(s:&quot; health.&quot;);
+ACS_EndPrint();
+</code></pre>
+<p>You can place anything inbetween <code>ACS_BeginPrint</code> and <code>ACS_EndPrint</code>, just make sure it eventually calls the latter.
+Example:</p>
+<pre><code class="language-c">ACS_BeginPrint();
+
+if(ACS_GetActorProperty(0, APROP_Health) &lt; 50)
+{
+    ACS_PrintString(s&quot;You're hurt &quot;);
+}
+else
+{
+    ACS_PrintString(s&quot;You're fine &quot;);
+}
+
+ACS_PrintName(n:0);
+
+ACS_EndPrint();
+</code></pre>
+<h3 id="printbold">PrintBold</h3>
+<p>Same as above except the functions are <code>ACS_BeginPrintBold</code> and <code>ACS_EndPrintBold</code></p>
+<h3 id="log">Log</h3>
+<p>Same as above except the functions are <code>ACS_BeginLog</code> and <code>ACS_EndLog</code></p>
+<h3 id="strparam">StrParam</h3>
+<p>Same as above except the functions are <code>ACS_BeginStrParam</code> and <code>ACS_EndStrParam</code> which returns <code>__str_ent</code></p>
+<pre><code class="language-cpp">ACS_BeginStrParam();
+ACS_PrintName(n:0);
+__str_ent str = ACS_EndStrParam();
+</code></pre>
+<h3 id="hudmessage">HudMessage</h3>
+<p>ACS:</p>
+<pre><code class="language-c">HudMessage(s:&quot;Hello world!&quot;, d:1337; HUDMSG_PLAIN | HUDMSG_ALPHA, 1, CR_RED, 0.5, 0.5, 1.0, 0.75);
+</code></pre>
+<p>C:</p>
+<pre><code class="language-c">ACS_BeginHudMessage();
+ACS_PrintString(s&quot;Hello World!&quot;);
+ACS_PrintInt(1337);
+ACS_OptHudMessage(HUDMSG_PLAIN | HUDMSG_ALPHA, 1, CR_RED, 0.5k, 0.5k, 1.0k);
+ACS_EndHudMessageX(0.75k);
+</code></pre>
+<ul>
+<li><code>k</code> is suffix for accum type (fixed point) </li>
+<li>Ending variants with different amount of parameters. Note that their meaning is same as in <a href="https://zdoom.org/wiki/HudMessage">HudMessage</a><ul>
+<li><code>ACS_EndHudMessage</code> no params</li>
+<li><code>ACS_EndHudMessageX</code> 1 parameters</li>
+<li><code>ACS_EndHudMessageXX</code> 2 parameters</li>
+<li><code>ACS_EndHudMessageXXX</code>  3 parameters</li>
+</ul>
+</li>
+</ul>
+<h2 id="c-library">C library</h2>
+<h3 id="printf">printf</h3>
+<p>Requires linked C library and an include:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+</code></pre>
+<p>Prints into console, same as <a href="https://zdoom.org/wiki/Log">Log</a> does</p>
+<p>Example:</p>
+<pre><code class="language-c">printf(&quot;Hello, you are at x:%k, y:%k z:%k&quot;, ACS_GetActorX(0), ACS_GetActorY(0), ACS_GetActorZ(0));
+</code></pre>
+<ul>
+<li><code>%k</code> is for accum a.k.a fixed point values</li>
+</ul>
+<h3 id="__nprintf">__nprintf</h3>
+<p>If you need printf formatting for HudMessage, StrParam or Print </p>
+<p>Example:</p>
+<pre><code class="language-c">ACS_BeginPrintBold();
+__nprintf(&quot;Player %d has connected.&quot;, ACS_PlayerNumber());
+ACS_EndPrintBold();
+</code></pre>
+		</div>
+		
+
+		<div class="footer">
+		This page was generated using ZGuideMake version: Alpha 0.0.3
+		</div>
+		
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>

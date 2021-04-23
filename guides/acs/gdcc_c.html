@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="name">
+				<a href="../../index.html">
+					<h1>ZGuide</h1>
+				</a>
+			</div>
+			<h1 id="gdcc-c">GDCC C</h1>
+<div class="toc">
+<ul>
+<li><a href="#gdcc-c">GDCC C</a><ul>
+<li><a href="#compilation">Compilation</a></li>
+<li><a href="#example-script">Example script</a></li>
+<li><a href="#c-extensions">C Extensions</a></li>
+<li><a href="#acs-functions">ACS functions</a></li>
+<li><a href="#printing-message-on-screen">Printing message on screen</a></li>
+<li><a href="#heap">Heap</a><ul>
+<li><a href="#memory-leaks">Memory leaks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="compilation">Compilation</h2>
+<p><a href="gdcc_overview.html">Read more here</a></p>
+<h2 id="example-script">Example script</h2>
+<p><a href="https://github.com/DavidPH/GDCC/blob/master/doc/examples/ZDACS.c">GDCC C official example scripts</a></p>
+<p>Assumption is you know C language to some degree.</p>
+<h2 id="c-extensions">C Extensions</h2>
+<p><a href="https://github.com/DavidPH/GDCC/blob/master/doc/C-ext.txt">Official documentation</a>.</p>
+<p><a href="gdcc_c_extensions.html">ZGuide page on extensions</a></p>
+<h2 id="acs-functions">ACS functions</h2>
+<pre><code class="language-c">#include &lt;ACS_ZDoom.h&gt;
+</code></pre>
+<p>Each function is prefixed with the word <code>ACS</code></p>
+<p>So <code>GetActorProperty</code> would be <code>ACS_GetActorProperty</code></p>
+<p>However certain functions such as <code>Print</code>, <code>PrintBold</code>, <code>HudMessage</code>, <code>HudMessageBold</code> and <code>Log</code> were split into native functions which were hidden under the hood. </p>
+<h2 id="printing-message-on-screen">Printing message on screen</h2>
+<p><a href="gdcc_c_print.html">ZGuide page</a></p>
+<h2 id="heap">Heap</h2>
+<p>Each script by default allocates memory from heap which it uses as a stack.</p>
+<p>See <a href="gdcc_c_extensions.html#alloc_aut">attribute alloc_Aut</a></p>
+<h3 id="memory-leaks">Memory leaks</h3>
+<p>If script does not reach its end, the heap memory it allocates on creation won't be freed.
+This can happen when:</p>
+<ul>
+<li>Script is terminated using <code>ACS_Terminate</code> or <code>ACS_NamedTerminate</code></li>
+<li>Level changes</li>
+<li>Runaway script termination is triggered (script performs too many operations in a single tick)</li>
+</ul>
+<p>You can use script attribute <a href="gdcc_c_extensions.html#alloc_aut">alloc_Aut</a> to avoid allocating any memory</p>
+<p>Example:</p>
+<pre><code class="language-c">[[call(&quot;Script&quot;), alloc_Aut(0)]]
+void my_script()
+{
+    // Note that this script cannot call any functions which StdCall calling convention
+</code></pre>
+<p>Any function which this script calls need to be of standard ACS calling convention</p>
+<pre><code class="language-c">[[call(&quot;StkCall&quot;)]]
+void my_function()
+{
+</code></pre>
+		</div>
+		
+
+		<div class="footer">
+		This page was generated using ZGuideMake version: Alpha 0.0.3
+		</div>
+		
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>

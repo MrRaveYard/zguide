@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="name">
+				<a href="../../index.html">
+					<h1>ZGuide</h1>
+				</a>
+			</div>
+			<h1 id="gdcc-c-extensions">GDCC C Extensions</h1>
+<div class="toc">
+<ul>
+<li><a href="#gdcc-c-extensions">GDCC C Extensions</a><ul>
+<li><a href="#extensions">Extensions</a><ul>
+<li><a href="#attribute-specifiers">Attribute specifiers</a><ul>
+<li><a href="#calling-conventions">Calling conventions</a></li>
+<li><a href="#script-type">Script type</a></li>
+<li><a href="#address">Address</a></li>
+<li><a href="#alloc_aut">alloc_Aut</a></li>
+<li><a href="#extern">extern</a></li>
+</ul>
+</li>
+<li><a href="#address-space">Address space</a></li>
+<li><a href="#string-table">String table</a></li>
+<li><a href="#accum-fixed-point">Accum (fixed point)</a></li>
+<li><a href="#printf-format-parameter-for-fixed-point">printf format parameter for fixed point</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="extensions">Extensions</h2>
+<p>List of GDCC's C extensions is specified with great detail <a href="https://github.com/DavidPH/GDCC/blob/master/doc/C-ext.txt">here</a>.</p>
+<p>If for some reason you have trouble understanding the document, here is an overview.</p>
+<h3 id="attribute-specifiers">Attribute specifiers</h3>
+<p>Attribute specifiers are used to attach additional information to declarations and declarators.</p>
+<pre><code class="language-c">[[ /* attributes */]]
+void test()
+{
+}
+</code></pre>
+<p>Here are some of the most important attributes</p>
+<h4 id="calling-conventions">Calling conventions</h4>
+<p>GDCC C has following calling conventions</p>
+<ul>
+<li><code>Native</code> for native functions</li>
+<li><code>StkCall</code> minimalistic ACS calling convention that does not pass stack pointer </li>
+<li><code>StdCall</code> standard calling convention</li>
+<li><code>Script</code> is a script. Depending on compilation parameters, it can be either named or numbered script.</li>
+<li><code>ScriptI</code> is a numbered script</li>
+<li><code>ScriptS</code> is a named script</li>
+<li><code>SScript</code> is a script that's called synchronously (probably called using <code>ACS_ExecuteWait</code>?)</li>
+<li><code>SScriptI</code> same as <code>SScript</code> except always a numbered script </li>
+<li><code>SScriptS</code> same as <code>SScript</code> except always a named script </li>
+<li><code>Special</code> for linedef actions</li>
+</ul>
+<p>Example of most common scripts:</p>
+<pre><code class="language-c">void this_is_a_function();
+
+[[call(&quot;Script&quot;)]]
+void this_is_a_script();
+
+[[call(&quot;StkCall&quot;)]]
+void this_a_simplified_function_call();
+</code></pre>
+<h4 id="script-type">Script type</h4>
+<pre><code class="language-text">  Sets the affected function's script type or flags. Supported types are:
+  &quot;bluereturn&quot;, &quot;death&quot;, &quot;disconnect&quot;, &quot;enter&quot;, &quot;event&quot;, &quot;lightning&quot;, &quot;open&quot;,
+  &quot;pickup&quot;, &quot;redreturn&quot;, &quot;respawn&quot;, &quot;return&quot;, &quot;unloading&quot;, &quot;whitereturn&quot;.
+  Supported flags are: &quot;clientside&quot;, &quot;net&quot;.
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-c">[[call(&quot;ScriptS&quot;), script(&quot;open&quot;)]]
+void starting_map_script();
+</code></pre>
+<h4 id="address">Address</h4>
+<p>The most common usage is to set the call name of affected function</p>
+<p>Example:</p>
+<pre><code class="language-c">[[call(&quot;ScriptS&quot;), address(&quot;real_name_of_the_script&quot;)]]
+void name_from_gdcc_context();
+</code></pre>
+<p>Console command <code>pukename real_name_of_the_script</code> will start the function.</p>
+<h4 id="alloc_aut">alloc_Aut</h4>
+<p>Each script in GDCC uses heap to allocate memory.</p>
+<p>If for some reason you need to different ammount or none at all, this attribute will help.</p>
+<pre><code class="language-c">[[call(&quot;ScriptS&quot;), alloc_Aut(0)]]
+void name_from_gdcc_context();
+</code></pre>
+<h4 id="extern">extern</h4>
+<p>In case you need your declaration usable in <code>.acs</code> use:</p>
+<pre><code class="language-c">[[extern(&quot;ACS&quot;)]]
+void test();
+</code></pre>
+<h3 id="address-space">Address space</h3>
+<p>This is used to do global/world scope variables, such as <a href="https://zdoom.org/wiki/Scope">(these)</a>.</p>
+<p>Example:</p>
+<pre><code class="language-c">__addrdef __mod_arr local_map;
+
+int local_map myVariable;
+</code></pre>
+<p>Available address spaces are:
+* <code>__loc_arr</code> script scope (must be declared inside script (<em>TODO confirm</em>))
+* <code>__mod_arr</code> map scope
+* <code>__hub_arr</code> world scope
+* <code>__gbl_arr</code> global scope</p>
+<h3 id="string-table">String table</h3>
+<p>ACS uses string table for strings.</p>
+<pre><code class="language-c">// C string
+const char* cstr = &quot;this is a C string&quot;;
+
+// String table entry
+__str_ent str = s&quot;this is a string table entry&quot;;
+</code></pre>
+<h3 id="accum-fixed-point">Accum (fixed point)</h3>
+<p>GDCC uses software implementation of single and double precision floating point when it's target is ACSE bytecode (so basically GZDoom/ZDoom/Zandronum).</p>
+<p>For better performance and/or less conversion when passing parameters into ACS functions which use fixed point use this: </p>
+<pre><code>_Accum number = 15.0k;
+
+SetActorVelocity(0, 16.5k, 0.0k, 0.0k, 0, 0);
+</code></pre>
+<p>Suffix <code>k</code> is for fixed point</p>
+<h3 id="printf-format-parameter-for-fixed-point">printf format parameter for fixed point</h3>
+<p>is <code>%k</code></p>
+		</div>
+		
+
+		<div class="footer">
+		This page was generated using ZGuideMake version: Alpha 0.0.3
+		</div>
+		
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>
