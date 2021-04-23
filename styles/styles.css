@@ -94,7 +94,17 @@ a.article-link:active, a.article-link:link, a.article-link:visited, a.article-li
 	transition: 0.2s;
 }
 
-a.article-link:hover {
+a[href^="/"]:active, a[href^=".."]:active, a[href^="/"]:link, a[href^=".."]:link, a[href^="/"]:visited, a[href^=".."]:visited, a[href^="/"]:hover, a[href^=".."]:hover {
+	font-family: sans-serif, Verdana;
+	color: #90D050;
+	font-size: 12px;
+	text-decoration: none;
+	background: none;
+	transition: 0.2s;
+}
+
+
+a.article-link:hover, a[href^="/"]:hover, a[href^=".."]:hover {
 	color: #F0F0F0;
 }
 
