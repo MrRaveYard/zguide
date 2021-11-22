@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="name">
+				<a href="../../index.html">
+					<h1>ZGuide</h1>
+				</a>
+			</div>
+			<h1 id="em2-damage-types">EM2: Damage Types</h1>
+<p><code>Em_Monster</code> types support damage subtypes</p>
+<pre><code class="language-java">class Em_Zombieman : Em_Monster
+{
+    Default
+    {
+        DamageFactor &quot;Bullet&quot;, 0.5;
+        DamageFactor &quot;Bullet.Heavy&quot;, 0.75;
+        DamageFactor &quot;Bullet.Heavy.Rifle&quot;, 0.99;
+
+        DamageFactor &quot;Fire&quot;, 0.1;
+        DamageFactor &quot;Fire.Plasma&quot;, 0.2;
+        DamageFactor &quot;Fire.Plasma.Railgun&quot;, 1.0; // Not valid because of 1.0
+    }
+}
+</code></pre>
+<p>So a projectile with <code>damagetype "Bullet.Heavy.Minigun"</code></p>
+<p>Would in this case apply <code>DamageFactor "Bullet.Heavy", 0.75;</code></p>
+<h2 id="common-damages">Common damages</h2>
+<pre><code class="language-text">Bullet
+    Arrow
+        Friendly    
+    Normal
+        Auto9
+    Heavy
+        Rifle
+        Minigun
+    Shell
+        Shotgun
+        SuperShotgun
+        SuperShotgunKnight
+            Friendly
+Explosive
+    Grenade
+        GrenadeLauncher
+    Rocket
+        RocketLauncher
+    Shell
+        Tank
+Fire
+    Plasma
+        Railgun
+Super
+    BFG
+    Nuke
+    Ravegun
+</code></pre>
+<h2 id="death-states">Death states</h2>
+<p>For <code>DamageType "Explosive.Shell.Tank"</code> the death state preference would be:</p>
+<pre><code class="language-text">Death.Explosive.Shell.Tank
+Death.Explosive.Shell
+Death.Explosive
+Death
+</code></pre>
+<p>or with XDeath</p>
+<pre><code class="language-text">XDeath.Explosive.Shell.Tank
+XDeath.Explosive.Shell
+XDeath.Explosive
+XDeath
+Death.Explosive.Shell.Tank
+Death.Explosive.Shell
+Death.Explosive
+Death
+</code></pre>
+<p>Which is different behavior than regular ZDoom where Death.Something without XDeath would take precedence</p>
+		</div>
+		
+
+		<div class="footer">
+		This page was generated using ZGuideMake version: Alpha 0.0.4
+		</div>
+		
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>

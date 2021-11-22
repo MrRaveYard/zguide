@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="name">
+				<a href="../../index.html">
+					<h1>ZGuide</h1>
+				</a>
+			</div>
+			<h1 id="gdcc-acc">GDCC ACC</h1>
+<div class="toc">
+<ul>
+<li><a href="#gdcc-acc">GDCC ACC</a><ul>
+<li><a href="#compilation">Compilation</a></li>
+<li><a href="#example-script">Example script</a></li>
+<li><a href="#features">Features</a><ul>
+<li><a href="#forward-declarations">Forward declarations</a></li>
+<li><a href="#preprocessor">Preprocessor</a></li>
+<li><a href="#enum">enum</a></li>
+<li><a href="#struct">struct</a></li>
+<li><a href="#custom-print">Custom print</a></li>
+<li><a href="#pragma">Pragma</a><ul>
+<li><a href="#fixed">fixed</a></li>
+<li><a href="#fixed_literal">fixed_literal</a></li>
+<li><a href="#fixed_type">fixed_type</a></li>
+<li><a href="#state">state</a></li>
+</ul>
+</li>
+<li><a href="#using-fixed-point-pragma">Using fixed point pragma</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="compilation">Compilation</h2>
+<p><a href="gdcc_overview.html">Read more here</a></p>
+<h2 id="example-script">Example script</h2>
+<p><a href="https://github.com/DavidPH/GDCC/blob/master/doc/examples/ACS-ext.acs">GDCC ACC official example scripts</a></p>
+<p>Basically works like regular <code>ACC.exe</code> but with further improvements</p>
+<p>For convenience here are some snippets from the example script and documentation.</p>
+<h2 id="features">Features</h2>
+<h3 id="forward-declarations">Forward declarations</h3>
+<p>GDCC-ACC allows forward declaration of functions</p>
+<pre><code class="language-c">function void test(void);
+</code></pre>
+<h3 id="preprocessor">Preprocessor</h3>
+<p>GDCC-ACC has a full C like preprocessor capabilities allowing you to define macros</p>
+<pre><code class="language-c">#define MY_COOL_MACRO(a, b) (a + b)
+</code></pre>
+<h3 id="enum">enum</h3>
+<pre><code class="language-c">enum SomeEnum
+{
+    OPTION_ONE,
+    ANOTHER = 5,
+    THIRD, // trailing comma allowed
+}
+
+SomeEnum val = THIRD;
+</code></pre>
+<p>No semicolon at the end</p>
+<h3 id="struct">struct</h3>
+<p>C style structures. </p>
+<pre><code class="language-c">struct MyStruct
+{
+    int a;
+
+    str s;
+
+    int args[4];
+}
+
+MyStruct arr[8];
+
+script &quot;test&quot; open
+{
+    arr[0].a = 0;
+    arr[0].s = &quot;testing&quot;;
+    arr[0].args[0] = 1;
+
+    arr[1] = test();
+}
+
+function MyStruct test()
+{
+    MyStruct mstr = {1337, &quot;hello&quot;, {0, 1, 2, 3} };
+    return mstr;
+}
+</code></pre>
+<h3 id="custom-print">Custom print</h3>
+<pre><code class="language-c">struct SomeStruct
+{
+   int i;
+   str s;
+   int a[4];
+}
+
+function void StructPrinter(SomeStruct ss);
+
+// It is possible in GDCC to declare extended print functions.
+print CoolPrint
+(
+   // This defines which function to call to start the print.
+   (begin): BeginPrint,
+
+   // And this defines which function to call to end the print. If this
+   // function returns a value, that value will be the result of the print.
+   (end): EndPrint,
+
+   // This is a macro in &lt;zspecial.acs&gt; which includes all the normal print
+   // specifiers. If none of them are desired, this can be omitted.
+   ACS_PrintPropertyBase(),
+
+   // Now to add our cool new print specifier.
+   ss: StructPrinter
+
+   // Note that the final specifier does not get a comma after it.
+);
+
+// Simple usage demonstration.
+function void PrintSomeStructs(SomeStruct ss1, SomeStruct ss2)
+{
+   // Such declared print functions are used exactly like the standard ones.
+   CoolPrint(s: &quot;ss1: &quot;, ss: ss1, s: &quot;; ss2: &quot;, ss: ss2);
+}
+
+// Do not forget to actually define forward declared functions. It can be
+// defined in another source file, or even an imported bytecode module, but if
+// a definition is not found, calls to the function will cause script
+// termination or worse.
+function void StructPrinter(SomeStruct ss)
+{
+   // When writing a custom print routine, you do not want to invoke a separate
+   // print, so PrintRaw is used instead.
+   PrintRaw(i: ss.i, c: ':', s: ss.s);
+}
+</code></pre>
+<h3 id="pragma">Pragma</h3>
+<h4 id="fixed">fixed</h4>
+<pre><code class="language-c">#pragma fixed on
+#pragma fixed off
+</code></pre>
+<p>Equivalent to setting both the fixed_literal and fixed_type pragmas to the
+specified state.</p>
+<h4 id="fixed_literal">fixed_literal</h4>
+<pre><code class="language-c">#pragma fixed_literal on
+#pragma fixed_literal off
+</code></pre>
+<p>When in effect, fixed-point literals have fixed type.</p>
+<p>When not in effect, fixed-point literals have int type.</p>
+<p>Follows the same scoping rules as STDC pragmas. The default state is OFF.</p>
+<h4 id="fixed_type">fixed_type</h4>
+<pre><code class="language-c">#pragma fixed_type on
+#pragma fixed_type off
+</code></pre>
+<p>When in effect, the fixed keyword indicates a fixed-point type.</p>
+<p>When not in effect, the fixed keyword is a synonym for int.</p>
+<p>Follows the same scoping rules as STDC pragmas. The default state is OFF.</p>
+<h4 id="state">state</h4>
+<pre><code class="language-c">#pragma state save
+#pragma state restore
+</code></pre>
+<p>Saves or restores the pragma state, as though entering or leaving a compound statement, respectively.</p>
+<h3 id="using-fixed-point-pragma">Using fixed point pragma</h3>
+<pre><code class="language-c">// This function demonstrates use of the fixed type.
+function void FixedFunc(void)
+{
+   // To enable the fixed type and make fixed-point literals have fixed type, a
+   // pragma is needed. If used inside of a function like this, it will apply
+   // only inside the function. If used outside any function, it applies to the
+   // entire file after its use.
+   #pragma fixed on
+
+   // Variables with fixed type are declared as normal. Without the effect of
+   // the pragma, fixed is an alias for int.
+   fixed x;
+
+   // Similarly, without the pragma, fixed-point literals have int type.
+   x = 12.5;
+
+   // This will result in y being set to 6.25, as the use of FixedMul is
+   // implied by the fixed type.
+   fixed y = x * 0.5;
+
+   // And this will result in i being set to 6, the type conversion being
+   // performed implicitly.
+   int i = y;
+
+   // Similarly, this will result in x being set to 6.0.
+   x = i;
+
+   // When mixing int and fixed in an expression, the int expression will be
+   // converted to fixed type for the operation.
+   x = y + i; // x = 12.25
+
+   // Type conversion can be performed explicitly using the C type cast syntax.
+   y = (fixed)i / 8; // y = 0.75
+
+   // Without using the fixed pragma before including zcommon.acs, it is not
+   // possible to print actual fixed values. Attempting to do so will result in
+   // the value being converted and misinterpreted.
+ //Log(s: &quot;A fixed number: &quot;, f: x);
+}
+</code></pre>
+		</div>
+		
+
+		<div class="footer">
+		This page was generated using ZGuideMake version: Alpha 0.0.4
+		</div>
+		
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>

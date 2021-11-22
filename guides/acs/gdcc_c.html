@@ -18,6 +18,7 @@
 <li><a href="#gdcc-c">GDCC C</a><ul>
 <li><a href="#compilation">Compilation</a></li>
 <li><a href="#example-script">Example script</a></li>
+<li><a href="#important-differences-between-acs">Important: Differences between ACS</a></li>
 <li><a href="#c-extensions">C Extensions</a></li>
 <li><a href="#acs-functions">ACS functions</a></li>
 <li><a href="#printing-message-on-screen">Printing message on screen</a></li>
@@ -34,6 +35,22 @@
 <h2 id="example-script">Example script</h2>
 <p><a href="https://github.com/DavidPH/GDCC/blob/master/doc/examples/ZDACS.c">GDCC C official example scripts</a></p>
 <p>Assumption is you know C language to some degree.</p>
+<h2 id="important-differences-between-acs">Important: Differences between ACS</h2>
+<div class="group">
+<ul>
+<li>variables declarations outside any block are by default world (hub) scoped.</li>
+<li>heap memory<ul>
+<li>world scope (<em>todo confirm</em>?)</li>
+<li>is allocated by scripts.</li>
+<li>See <a href="#memory-leaks">memory leaks</a> below</li>
+</ul>
+</li>
+<li>uses slightly different calling convention on functions.</li>
+<li>scripts are by <a href="gdcc_c_extensions.html#calling-conventions">script call convention</a> on functions.</li>
+<li>all ACS functions are prefixed with <code>ACS_</code></li>
+<li>certain ACS functions like <code>Print</code>, <code>PrintBold</code>, <code>HudMessage</code>, <code>HudMessageBold</code> and <code>Log</code> were split into native functions which were hidden under the hood. </li>
+</ul>
+</div>
 <h2 id="c-extensions">C Extensions</h2>
 <p><a href="https://github.com/DavidPH/GDCC/blob/master/doc/C-ext.txt">Official documentation</a>.</p>
 <p><a href="gdcc_c_extensions.html">ZGuide page on extensions</a></p>
@@ -72,7 +89,7 @@ void my_function()
 		
 
 		<div class="footer">
-		This page was generated using ZGuideMake version: Alpha 0.0.3
+		This page was generated using ZGuideMake version: Alpha 0.0.4
 		</div>
 		
 		<script src="../../styles/highlight/highlight.pack.js"></script>

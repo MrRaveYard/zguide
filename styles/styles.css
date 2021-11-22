@@ -41,8 +41,9 @@ code {
 }
 
 a:visited, a:hover, a:active, a:link {
+
 	font-family: sans-serif, Verdana;
-	color: #D09050;
+	color: #90D050;
 	font-size: 12px;
 	text-decoration: none;
 	background: none;
@@ -94,21 +95,26 @@ a.article-link:active, a.article-link:link, a.article-link:visited, a.article-li
 	transition: 0.2s;
 }
 
-a[href^="/"]:active, a[href^=".."]:active, a[href^="/"]:link, a[href^=".."]:link, a[href^="/"]:visited, a[href^=".."]:visited, a[href^="/"]:hover, a[href^=".."]:hover {
+a[href*="//"]:active, a[href^=".."]:active, a[href*="//"]:link, a[href^=".."]:link, a[href*="//"]:visited, a[href^=".."]:visited, a[href*="//"]:hover, a[href^=".."]:hover {
 	font-family: sans-serif, Verdana;
-	color: #90D050;
+	color: #D09050;
 	font-size: 12px;
 	text-decoration: none;
 	background: none;
 	transition: 0.2s;
 }
 
-
-a.article-link:hover, a[href^="/"]:hover, a[href^=".."]:hover {
-	color: #F0F0F0;
+a[href*="//"]:active, a[href*="//"]:link, a[href*="//"]:visited, a[href*="//"]:hover {
+	font-family: sans-serif, Verdana;
+	color: #8080D0;
+	font-size: 12px;
+	text-decoration: none;
+	background: none;
+	transition: 0.2s;
 }
 
-a.wiki-link:active, a.wiki-link:link, a.wiki-link:visited, a.wiki-link:hover {
+a.wiki-link:active, a.wiki-link:link, a.wiki-link:visited, a.wiki-link:hover, a[href*="zdoom."]:active, a[href*="zdoom."]:link, a[href*="zdoom."]:visited, a[href*="zdoom."]:hover,
+a[href*="zandronum."]:active, a[href*="zandronum."]:link, a[href*="zandronum."]:visited, a[href*="zandronum."]:hover {
 	font-family: sans-serif, Verdana;
 	color: #D05050;
 	font-size: 12px;
@@ -116,6 +122,11 @@ a.wiki-link:active, a.wiki-link:link, a.wiki-link:visited, a.wiki-link:hover {
 	background: none;
 	transition: 0.2s;
 }
+
+a[href*="youtube."]:active, a[href*="youtube."]:link, a[href*="youtube."]:visited, a[href*="youtube."]:hover {
+	color: #D02020;
+}
+
 
 a.wiki-link:hover {
 	color: #F0F0F0;
