@@ -17,29 +17,45 @@
 <ul>
 <li><a href="#em2-zscript-introduction">EM2: ZScript Introduction</a><ul>
 <li><a href="#base-classes">Base classes</a></li>
-<li><a href="#em_actor">Em_Actor</a><ul>
-<li><a href="#em_monster">Em_Monster</a></li>
-<li><a href="#em_compositeactor">Em_CompositeActor</a></li>
+<li><a href="#em_actor">Em_Actor</a></li>
+<li><a href="#em_ammo">Em_Ammo</a></li>
+<li><a href="#em_weapon">Em_Weapon</a><ul>
+<li><a href="#base-replacement-functions">Base replacement functions:</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#properties">Properties:</a></li>
 </ul>
 </li>
+<li><a href="#em_monster">Em_Monster</a></li>
+<li><a href="#em_compositeactor">Em_CompositeActor</a></li>
 <li><a href="#mad_particle">Mad_Particle</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h2 id="base-classes">Base classes</h2>
-<p>Em2's ZScript constist of these base classes</p>
+<p>Em2's core ZScript consists of these base classes</p>
 <ul>
 <li><del>Mad_Actor</del><ul>
 <li>Em_Actor<ul>
-<li>Em_FastProjectile</li>
+<li>Em_FastProjectile<ul>
+<li>Em_Whizzer<ul>
+<li>Em_Bullet</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Em_Monster<ul>
 <li>Em_CompositeActor</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Mad_Particle</li>
+<li>Em_Ammo</li>
+<li>Em_Weapon</li>
+<li>Mad_Particle<ul>
+<li>Em_FakeBullet</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><del>Mad_BasicActor</del></li>
@@ -47,7 +63,37 @@
 <p>Do not use the <del>crossed</del> actors! Although these are used, they are mostly deprecated.</p>
 <h2 id="em_actor">Em_Actor</h2>
 <p>Used for decorations or anything that's not supposed to be killed.</p>
-<h3 id="em_monster">Em_Monster</h3>
+<h2 id="em_ammo">Em_Ammo</h2>
+<p>The main difference is that no ammo from the pickup is lost.
+For example: If you can only pick three shells, you'll leave one shell on the ground.</p>
+<h2 id="em_weapon">Em_Weapon</h2>
+<h3 id="base-replacement-functions">Base replacement functions:</h3>
+<pre><code>Em_WeaponReady
+Em_Raise
+Em_Lower
+Em_Sound // replaces A_StartSound
+</code></pre>
+<h3 id="functions">Functions</h3>
+<pre><code>// sounds
+action bool Em_MatrixTipSound(int chan = CHAN_7, double volume = 0.75)            // play's bullet tip sound when bullet time is active. This should be called 1 tick before the actual projectile is fired
+
+// attack
+action Actor, Actor Em_FireBullet(class&lt;Em_FastProjectile&gt; bullet, Vector2 spread, bool useAmmo)    // fires projectile bullets with correct spread and returns a bullet projectile instance and a bullet trail instance
+action Mad_Particle Em_SmokeTrailSpawner(Actor afterWhom) // spawn bullet trail following specified projectile
+
+
+// overlay/weapon sprite movement
+action void EM_Pushback(double intensity) // pushes player back
+action void EM_Recoil(double x, double y) // moves the weapon sprites
+action void Em_RecoilSkipable(double x, double y, double addRotation = 0) // moves the weapon sprites while letting you deselect the weapon
+action void Em_Shake(double factor) // shake the overlay sprite
+</code></pre>
+<h3 id="properties">Properties:</h3>
+<pre><code>Em_Weapon.PrimaryDamage 'Bullet';       // Informative: Used by healthbar to show how much resistence the actor has towards that weapon 
+Em_Weapon.SecondaryDamage 'Bullet';
+Em_Weapon.UseLayerScale 1;              // Disables automatic overlay sprite scaling 
+</code></pre>
+<h2 id="em_monster">Em_Monster</h2>
 <p><code>class Em_Monster</code> is a basic monster type which implements the following features.</p>
 <ul>
 <li>Headshots</li>
@@ -60,10 +106,12 @@
 <li><a href="damage_types.md">Damage (sub)categories</a></li>
 </ul>
 <p>To define anything that is supposed to be shootable, use Em_Monster</p>
-<h3 id="em_compositeactor">Em_CompositeActor</h3>
+<h2 id="em_compositeactor">Em_CompositeActor</h2>
 <p>Actor that is made out of multiple actors, either as hitboxes or even as models.</p>
 <h2 id="mad_particle">Mad_Particle</h2>
-<p>Is a basic particle for smoke and explosions. These shouldn't directly affect the playsim.</p>
+<p>Is a basic particle for smoke and explosions that isn't allowed to interact with other actors.
+Since 220922 the amount of <code>Mad_Particle</code>s in the level is limited by CVAR <code>em_sv_max_particles</code></p>
+<p>(TODO document <code>Mad_Particle.bucket_bias</code>)</p>
 		</div>
 		
 
