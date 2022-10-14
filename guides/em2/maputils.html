@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<Title>ZGuide</Title>
+		<link type="text/css" rel="stylesheet" href="../../styles/styles.css">
+		<link rel="stylesheet" href="../../styles/highlight/styles/tomorrow-night.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="name">
+				<a href="../../index.html">
+					<h1>ZGuide</h1>
+				</a>
+			</div>
+			<h1 id="em2-map-utility-scripts">EM2: Map utility scripts</h1>
+<div class="toc">
+<ul>
+<li><a href="#em2-map-utility-scripts">EM2: Map utility scripts</a><ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#scripts">Scripts</a></li>
+<li><a href="#callback-scripts">Callback scripts</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="introduction">Introduction</h2>
+<p>There’s <strong>absolutely no need</strong> to use <code>#import</code> or <code>#include</code> to use these scripts.</p>
+<p>There are various utility scripts for mappers to utilize from the global script library.</p>
+<p>All that needs to be done is calling the proper named script with correct parameters.</p>
+<h2 id="scripts">Scripts</h2>
+<pre><code>// Cutscene
+script &quot;Em_Cutscene_Start&quot; (void); // tells EM_ACS that map specified cutscene is playing. If cutscene is skipped, it'll call &quot;Em_Skip_Cutscene&quot;
+script &quot;Em_Cutscene_Skipper&quot; (void); // deprecated: use &quot;Em_Cutscene_Start&quot; instead
+script &quot;Em_Cutscene_IsActive&quot; (void); // returns true if cutscene skip option is shown
+script &quot;Em_Cutscene_End&quot; (void); // tells EM_ACS that cutscene is no longer playing.
+
+// Misc
+script &quot;em_kill_me&quot; (int teleport_spot); // Kills activator of this script. The activator is silently teleported to the teleport_spot (if teleport_spot isn't 0)
+
+// Music library
+script &quot;em_music_fadein&quot; (fixed seconds);
+script &quot;em_music_fadeout&quot; (fixed seconds);
+</code></pre>
+<h2 id="callback-scripts">Callback scripts</h2>
+<p>These scripts are meant to be overriden by the map scripts</p>
+<pre><code>// Starting Items
+script &quot;em_starting_loadout&quot; (void); // called when player is starting new game in this map. Implement this to give players/developers appropriate starting items in this map.
+
+// Cutscene
+script &quot;Em_Skip_Cutscene&quot; (void); // called when player skips cutscene
+</code></pre>
+		</div>
+		
+
+		<div class="footer">
+		This page was generated using ZGuideMake version: Alpha 0.0.4
+		</div>
+		
+		<script src="../../styles/highlight/highlight.pack.js"></script>
+		<script src="../../styles/scripts.js"></script>
+		<script>hljs.highlightAll();</script>
+	</body>
+</html>
